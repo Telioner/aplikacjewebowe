@@ -82,8 +82,8 @@ export default class HelloWorldScene extends Phaser.Scene
 
         this.stars = this.physics.add.group({
             key: 'star',
-            repeat: 45,
-            setXY: { x: 82, y: 0, stepX: 14 }
+            repeat: 90,
+            setXY: { x: 82, y: 0, stepX: 7 }
         });
 
         this.stars.children.iterate(c => {
