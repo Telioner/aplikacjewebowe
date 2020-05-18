@@ -9,7 +9,9 @@ export default class HelloWorldScene extends Phaser.Scene
     private bombs?: Phaser.Physics.Arcade.Group
 
     private score = 0
-    private scoreText?: Phaser.GameObjects.Text
+    private highScore = document.cookie;
+    private scoreText?: Phaser.GameObjects.Text;
+    private highScoreText?: Phaser.GameObjects.Text;
     private gameOver = false;
 
 	constructor()
@@ -102,6 +104,12 @@ export default class HelloWorldScene extends Phaser.Scene
             fontFamily: 'Impact, Charcoal, sans-serif'
             
         })
+        this.highScoreText = this.add.text(50,60, 'HighScore: '+ this.highScore,{
+            fontSize: '12px',
+            fill: '#000',
+            fontFamily: 'Impact, Charcoal, sans-serif'
+            
+        })
 
         this.bombs = this.physics.add.group()
 
@@ -124,10 +132,14 @@ export default class HelloWorldScene extends Phaser.Scene
         this.player?.setTint(0xff0000);
     
         this.player?.anims.play('turn');
-    
+        if (this.score > Number(this.highScore)){
+        this.highScore = this.score.toString();    
+        document.cookie = this.score.toString();
+        }
         this.gameOver = true;
-
-        setTimeout(() => { this.scene.restart() }, 2000)
+        alert("Score: " + this.score + " HighScore: " + document.cookie)
+        setTimeout(() => { this.score = 0}, 100)
+        setTimeout(() => { this.scene.restart() }, 110)
     }
     private handleCollectStar(player: Phaser.GameObjects.GameObject, s: Phaser.GameObjects.GameObject)
     {
@@ -136,6 +148,7 @@ export default class HelloWorldScene extends Phaser.Scene
 
         this.score += 10
         this.scoreText?.setText('Score: ' + this.score)
+        this.highScoreText?.setText('HighScore: ' + this.highScore)
 
         if(this.stars?.countActive(true) === 0)
         {
